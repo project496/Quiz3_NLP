@@ -13,9 +13,34 @@ st.title("Text Similarity using Pretrained NLP Model")
 
 st.write("This application uses the pretrained model all-MiniLM-L6-v2.")
 
-text1 = st.text_input("Enter Sentence 1")
-text2 = st.text_input("Enter Sentence 2")
-text3 = st.text_input("Enter Sentence 3")
+st.info("""
+💡 **Instructions**
+
+• Enter one sentence in each box.
+
+**Example**
+
+Sentence 1: Artificial Intelligence
+
+Sentence 2: Machine Learning
+
+Sentence 3: Deep Learning
+""")
+
+text1 = st.text_input(
+    "Enter Sentence 1",
+    placeholder="Example: Artificial Intelligence"
+)
+
+text2 = st.text_input(
+    "Enter Sentence 2",
+    placeholder="Example: Machine Learning"
+)
+
+text3 = st.text_input(
+    "Enter Sentence 3",
+    placeholder="Example: Deep Learning"
+)
 
 if st.button("Compare Similarity"):
 
@@ -45,9 +70,9 @@ if st.button("Compare Similarity"):
         score13 = similarity[0][2]
         score23 = similarity[1][2]
 
-        st.write("Sentence 1 vs Sentence 2 :", round(score12,4))
-        st.write("Sentence 1 vs Sentence 3 :", round(score13,4))
-        st.write("Sentence 2 vs Sentence 3 :", round(score23,4))
+        st.write("Sentence 1 vs Sentence 2 :", round(score12, 4))
+        st.write("Sentence 1 vs Sentence 3 :", round(score13, 4))
+        st.write("Sentence 2 vs Sentence 3 :", round(score23, 4))
 
         st.subheader("Bar Chart")
 
@@ -93,8 +118,8 @@ if st.button("Compare Similarity"):
         fig3, ax3 = plt.subplots()
 
         ax3.scatter(
-            reduced[:,0],
-            reduced[:,1]
+            reduced[:, 0],
+            reduced[:, 1]
         )
 
         labels = [
@@ -109,6 +134,9 @@ if st.button("Compare Similarity"):
                 reduced[i][1],
                 labels[i]
             )
+
+        ax3.set_xlabel("PCA Component 1")
+        ax3.set_ylabel("PCA Component 2")
 
         st.pyplot(fig3)
 
@@ -127,6 +155,7 @@ if st.button("Compare Similarity"):
         st.write("The graphs directly represent similarity results.")
 
         st.markdown("### Logic")
+
         highest = max(scores)
 
         if highest == score12:
