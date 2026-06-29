@@ -7,16 +7,16 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
 # ── Page Config ────────────────────────────────────────────────────────────────
-st.set_page_config(page_title="SemantiQ – Text Similarity Analyzer", layout="wide", page_icon="🔥")
+st.set_page_config(page_title="SemantiQ – Text Similarity Analyzer", layout="wide", page_icon="⚙️")
 
-# ── Color Palette (Sunset Orange) ─────────────────────────────────────────────
+# ── Color Palette (Graphite / Monochrome) ─────────────────────────────────────
 # BG:       #0d0d0d  (near-black)
-# Card:     #1a1108  (warm dark brown)
-# Border:   #c2410c  (burnt orange)
-# Accent1:  #f97316  (orange)
-# Accent2:  #fbbf24  (amber/gold)
-# Text:     #fef3c7  (warm cream)
-# Muted:    #92400e  (dark amber)
+# Card:     #1a1a1a  (dark grey)
+# Border:   #4b4b4b  (mid grey)
+# Accent1:  #9ca3af  (light grey / silver)
+# Accent2:  #e5e7eb  (near-white grey)
+# Text:     #f3f4f6  (off-white)
+# Muted:    #6b7280  (slate grey)
 
 # ── Custom CSS ─────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -34,49 +34,49 @@ html, body, [class*="css"] {
 
 /* Hero header banner */
 .hero-banner {
-    background: linear-gradient(135deg, #1a0f00 0%, #2d1600 50%, #1a0800 100%);
-    border: 1px solid #c2410c;
+    background: linear-gradient(135deg, #111111 0%, #1f1f1f 50%, #0f0f0f 100%);
+    border: 1px solid #4b4b4b;
     border-radius: 18px;
     padding: 2rem 2.5rem;
     margin-bottom: 1.8rem;
-    box-shadow: 0 8px 32px rgba(249,115,22,0.15);
+    box-shadow: 0 8px 32px rgba(156,163,175,0.12);
 }
 .hero-title {
     font-size: 2rem; font-weight: 700;
-    background: linear-gradient(90deg, #f97316, #fbbf24);
+    background: linear-gradient(90deg, #9ca3af, #e5e7eb);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     margin: 0 0 0.4rem 0;
 }
-.hero-sub { color: #d97706; font-size: 0.95rem; margin: 0; }
+.hero-sub { color: #9ca3af; font-size: 0.95rem; margin: 0; }
 
 /* Section headings */
-h2, h3, h4 { color: #fbbf24 !important; font-weight: 600 !important; }
+h2, h3, h4 { color: #e5e7eb !important; font-weight: 600 !important; }
 
 /* Divider */
-hr { border-color: #c2410c44; margin: 1.5rem 0; }
+hr { border-color: #4b4b4b44; margin: 1.5rem 0; }
 
 /* Text areas */
 .stTextArea textarea {
-    background: #1a1108 !important;
-    color: #fef3c7 !important;
-    border: 1.5px solid #92400e !important;
+    background: #1a1a1a !important;
+    color: #f3f4f6 !important;
+    border: 1.5px solid #6b7280 !important;
     border-radius: 12px !important;
     font-size: 0.9rem;
     transition: border-color 0.2s;
 }
 .stTextArea textarea:focus {
-    border-color: #f97316 !important;
-    box-shadow: 0 0 0 2px rgba(249,115,22,0.2) !important;
+    border-color: #9ca3af !important;
+    box-shadow: 0 0 0 2px rgba(156,163,175,0.2) !important;
 }
-.stTextArea label { color: #fbbf24 !important; font-weight: 600 !important; font-size: 0.85rem !important; }
+.stTextArea label { color: #e5e7eb !important; font-weight: 600 !important; font-size: 0.85rem !important; }
 
 /* Sliders */
-.stSlider label { color: #fbbf24 !important; font-weight: 600 !important; }
-.stSlider [data-baseweb="slider"] div[role="slider"] { background: #f97316 !important; }
+.stSlider label { color: #e5e7eb !important; font-weight: 600 !important; }
+.stSlider [data-baseweb="slider"] div[role="slider"] { background: #9ca3af !important; }
 
 /* Buttons */
 .stButton > button {
-    background: linear-gradient(135deg, #ea580c, #f97316, #fbbf24) !important;
+    background: linear-gradient(135deg, #4b4b4b, #6b7280, #9ca3af) !important;
     color: #0d0d0d !important;
     border: none !important;
     border-radius: 10px !important;
@@ -85,43 +85,43 @@ hr { border-color: #c2410c44; margin: 1.5rem 0; }
     font-size: 0.95rem !important;
     letter-spacing: 0.02em;
     transition: all 0.25s !important;
-    box-shadow: 0 4px 15px rgba(249,115,22,0.35) !important;
+    box-shadow: 0 4px 15px rgba(156,163,175,0.3) !important;
 }
 .stButton > button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 6px 22px rgba(249,115,22,0.5) !important;
+    box-shadow: 0 6px 22px rgba(156,163,175,0.45) !important;
 }
 
 /* Metric cards */
 .metric-card {
-    background: linear-gradient(145deg, #1c1005, #251608);
-    border: 1.5px solid #92400e;
+    background: linear-gradient(145deg, #161616, #1f1f1f);
+    border: 1.5px solid #6b7280;
     border-radius: 14px;
     padding: 1rem 1.2rem;
     margin: 0.35rem 0;
     transition: border-color 0.2s, transform 0.2s;
 }
-.metric-card:hover { border-color: #f97316; transform: translateY(-2px); }
-.score-label { color: #f97316; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
-.score-value { color: #fef3c7; font-size: 1.65rem; font-weight: 700; line-height: 1.2; margin: 0.2rem 0 0.1rem 0; }
-.score-desc { color: #78350f; font-size: 0.73rem; line-height: 1.4; }
+.metric-card:hover { border-color: #9ca3af; transform: translateY(-2px); }
+.score-label { color: #9ca3af; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+.score-value { color: #f3f4f6; font-size: 1.65rem; font-weight: 700; line-height: 1.2; margin: 0.2rem 0 0.1rem 0; }
+.score-desc { color: #9ca3af99; font-size: 0.73rem; line-height: 1.4; }
 
 /* Paul card (standards) */
 .paul-card {
-    background: linear-gradient(145deg, #1c1005, #251608);
-    border: 1.5px solid #92400e;
-    border-left: 4px solid #f97316;
+    background: linear-gradient(145deg, #161616, #1f1f1f);
+    border: 1.5px solid #6b7280;
+    border-left: 4px solid #9ca3af;
     border-radius: 14px;
     padding: 1rem 1.2rem;
     margin: 0.35rem 0;
     transition: all 0.2s;
 }
-.paul-card:hover { border-left-color: #fbbf24; transform: translateX(3px); }
+.paul-card:hover { border-left-color: #e5e7eb; transform: translateX(3px); }
 
 /* Section card wrapper */
 .section-card {
-    background: #130c02;
-    border: 1px solid #92400e33;
+    background: #131313;
+    border: 1px solid #6b728033;
     border-radius: 16px;
     padding: 1.4rem 1.6rem;
     margin: 1rem 0;
@@ -129,36 +129,36 @@ hr { border-color: #c2410c44; margin: 1.5rem 0; }
 
 /* Sidebar */
 [data-testid="stSidebar"] {
-    background: #100a02 !important;
-    border-right: 1px solid #92400e !important;
+    background: #0f0f0f !important;
+    border-right: 1px solid #6b7280 !important;
 }
-[data-testid="stSidebar"] h3 { color: #fbbf24 !important; }
-[data-testid="stSidebar"] p, [data-testid="stSidebar"] li { color: #d97706 !important; }
+[data-testid="stSidebar"] h3 { color: #e5e7eb !important; }
+[data-testid="stSidebar"] p, [data-testid="stSidebar"] li { color: #9ca3af !important; }
 
 /* Success / info / warning */
 .stSuccess { background: #1a2e0a !important; border-color: #16a34a !important; border-radius: 10px !important; }
-.stInfo { background: #1c1005 !important; border-color: #f97316 !important; border-radius: 10px !important; }
+.stInfo { background: #161616 !important; border-color: #9ca3af !important; border-radius: 10px !important; }
 .stWarning { border-radius: 10px !important; }
 
 /* Dataframe */
 [data-testid="stDataFrame"] { border-radius: 12px; overflow: hidden; }
 
 /* Spinner */
-.stSpinner > div { border-top-color: #f97316 !important; }
+.stSpinner > div { border-top-color: #9ca3af !important; }
 </style>
 """, unsafe_allow_html=True)
 
 # ── Hero Banner ────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-banner">
-  <div class="hero-title">🔥 SemantiQ — Text Similarity Analyzer</div>
+  <div class="hero-title">⚙️ SemantiQ — Text Similarity Analyzer</div>
   <p class="hero-sub">Enter 2–10 texts · Cosine similarity via <code>all-MiniLM-L6-v2</code> · Scored against Paul's 7 Intellectual Standards</p>
 </div>
 """, unsafe_allow_html=True)
 
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown("### 🔥 Paul's Standards")
+    st.markdown("### ⚙️ Paul's Standards")
     st.markdown("""
 | | Standard | Measures |
 |---|---|---|
@@ -174,7 +174,7 @@ with st.sidebar:
     st.markdown("**Model:** `all-MiniLM-L6-v2`")
     st.markdown("**Metric:** Cosine Similarity (0 → 1)")
     st.markdown("---")
-    st.markdown("<span style='color:#78350f;font-size:0.8rem;'>🟠 High ≥ 70% &nbsp; 🟡 Mid ≥ 45% &nbsp; 🔴 Low < 45%</span>", unsafe_allow_html=True)
+    st.markdown("<span style='color:#9ca3af99;font-size:0.8rem;'>⚪ High ≥ 70% &nbsp; ⚫ Mid ≥ 45% &nbsp; 🔴 Low < 45%</span>", unsafe_allow_html=True)
 
 # ── Input Section ──────────────────────────────────────────────────────────────
 st.markdown("### ✏️ Enter Your Texts")
@@ -268,14 +268,14 @@ def compute_paul_standards(texts, sim_matrix):
 
     return scores
 
-# ── Plotting Functions (Sunset Orange palette) ─────────────────────────────────
+# ── Plotting Functions (Graphite / Monochrome palette) ────────────────────────
 BG      = "#0d0d0d"
-CARD    = "#1a1108"
-BORDER  = "#c2410c"
-ORANGE  = "#f97316"
-AMBER   = "#fbbf24"
-CREAM   = "#fef3c7"
-MUTED   = "#92400e"
+CARD    = "#1a1a1a"
+BORDER  = "#4b4b4b"
+ORANGE  = "#9ca3af"   # primary accent (formerly orange)
+AMBER   = "#e5e7eb"   # secondary accent (formerly amber)
+CREAM   = "#f3f4f6"   # text (formerly cream)
+MUTED   = "#6b7280"   # muted grey
 
 def style_ax(ax, fig):
     fig.patch.set_facecolor(BG)
@@ -298,7 +298,7 @@ def plot_standards_radar(paul_scores):
 
     fig, ax = plt.subplots(figsize=(5.5, 5.5), subplot_kw=dict(polar=True))
     fig.patch.set_facecolor(BG)
-    ax.set_facecolor("#1a1108")
+    ax.set_facecolor("#1a1a1a")
 
     ax.plot(angles, vals_p, 'o-', linewidth=2.2, color=ORANGE)
     ax.fill(angles, vals_p, alpha=0.22, color=ORANGE)
@@ -331,7 +331,7 @@ def plot_standards_bar(paul_scores):
     style_ax(ax, fig)
 
     # Color each bar based on score
-    bar_colors = [ORANGE if v >= 70 else AMBER if v >= 45 else "#dc2626" for v in vals]
+    bar_colors = [ORANGE if v >= 70 else AMBER if v >= 45 else "#9ca3af55" for v in vals]
     bars = ax.barh(cats, vals, color=bar_colors, edgecolor='none', height=0.52)
 
     for bar, val in zip(bars, vals):
@@ -353,7 +353,7 @@ def plot_standards_bar(paul_scores):
     from matplotlib.patches import Patch
     legend = [Patch(color=ORANGE, label='High ≥70%'),
               Patch(color=AMBER,  label='Mid ≥45%'),
-              Patch(color='#dc2626', label='Low <45%')]
+              Patch(color='#6b7280', label='Low <45%')]
     ax.legend(handles=legend, loc='lower right',
               facecolor=CARD, edgecolor=BORDER,
               labelcolor=CREAM, fontsize=8)
@@ -366,10 +366,10 @@ def plot_similarity_heatmap(sim_df):
     style_ax(ax, fig)
 
     from matplotlib.colors import LinearSegmentedColormap
-    sunset_cmap = LinearSegmentedColormap.from_list(
-        "sunset", ["#1a1108", "#92400e", "#c2410c", "#f97316", "#fbbf24"])
+    mono_cmap = LinearSegmentedColormap.from_list(
+        "graphite", ["#1a1a1a", "#4b4b4b", "#6b7280", "#9ca3af", "#e5e7eb"])
 
-    im = ax.imshow(sim_df.values, cmap=sunset_cmap, vmin=0, vmax=1, aspect='auto')
+    im = ax.imshow(sim_df.values, cmap=mono_cmap, vmin=0, vmax=1, aspect='auto')
     cbar = plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cbar.ax.yaxis.set_tick_params(color=CREAM)
     plt.setp(cbar.ax.yaxis.get_ticklabels(), color=CREAM)
@@ -400,8 +400,8 @@ def plot_topk_bar(pairs, top_k):
     fig, ax = plt.subplots(figsize=(max(5, len(labels) * 1.4), 4))
     style_ax(ax, fig)
 
-    # Gradient from amber → orange based on rank
-    grad = [plt.cm.YlOrRd(0.4 + 0.5 * (1 - i / max(len(labels)-1, 1))) for i in range(len(labels))]
+    # Gradient from light grey → dark grey based on rank
+    grad = [plt.cm.Greys(0.35 + 0.5 * (1 - i / max(len(labels)-1, 1))) for i in range(len(labels))]
     bars = ax.bar(labels, values, color=grad, edgecolor='none', width=0.52,
                   linewidth=0)
 
@@ -426,7 +426,7 @@ if analyse:
     if len(filled) < 2:
         st.warning("⚠️ Please enter at least 2 texts before analysing.")
     else:
-        with st.spinner("🔥 Computing similarities..."):
+        with st.spinner("⚙️ Computing similarities..."):
             model = SentenceTransformer("all-MiniLM-L6-v2")
             embeddings = model.encode(filled)
             sim_matrix = cosine_similarity(embeddings)
@@ -444,7 +444,7 @@ if analyse:
         from matplotlib.colors import LinearSegmentedColormap
         st.dataframe(
             sim_df.style.format("{:.4f}").background_gradient(
-                cmap="YlOrRd", vmin=0, vmax=1),
+                cmap="Greys", vmin=0, vmax=1),
             use_container_width=True
         )
 
@@ -453,7 +453,7 @@ if analyse:
         top_pairs = sorted(pairs, key=lambda x: x[2], reverse=True)[:8]
         pair_cols = st.columns(min(len(top_pairs), 4))
         for idx, (a, b, score) in enumerate(top_pairs):
-            bar_color = "#f97316" if score > 0.7 else "#fbbf24" if score > 0.4 else "#dc2626"
+            bar_color = "#e5e7eb" if score > 0.7 else "#9ca3af" if score > 0.4 else "#6b7280"
             pct = int(score * 100)
             with pair_cols[idx % 4]:
                 st.markdown(f"""
@@ -503,8 +503,8 @@ if analyse:
         # Cards row
         std_cols = st.columns(4)
         for idx, (std, score) in enumerate(paul_scores.items()):
-            bar_color = "#f97316" if score >= 70 else "#fbbf24" if score >= 45 else "#dc2626"
-            score_color = "#f97316" if score >= 70 else "#fbbf24" if score >= 45 else "#ef4444"
+            bar_color = "#e5e7eb" if score >= 70 else "#9ca3af" if score >= 45 else "#6b7280"
+            score_color = "#e5e7eb" if score >= 70 else "#9ca3af" if score >= 45 else "#9ca3af"
             with std_cols[idx % 4]:
                 st.markdown(f"""
                 <div class="paul-card">
@@ -539,7 +539,7 @@ if analyse:
         st.markdown(f"""
 <div class="section-card">
 
-🟠 **Most Similar Pair:** `{best_pair[0]}` & `{best_pair[1]}` — score `{best_pair[2]:.4f}` — semantically closest texts.
+⚪ **Most Similar Pair:** `{best_pair[0]}` & `{best_pair[1]}` — score `{best_pair[2]:.4f}` — semantically closest texts.
 
 🔴 **Least Similar Pair:** `{worst_pair[0]}` & `{worst_pair[1]}` — score `{worst_pair[2]:.4f}` — most divergent in meaning.
 
@@ -554,8 +554,8 @@ if analyse:
 
 else:
     st.markdown("""
-<div style="background:#1a1108;border:1.5px dashed #92400e;border-radius:14px;
-            padding:1.6rem;text-align:center;color:#d97706;font-size:1rem;">
-  🔥 Enter your texts above and click <strong style="color:#f97316;">Analyse</strong> to begin.
+<div style="background:#1a1a1a;border:1.5px dashed #6b7280;border-radius:14px;
+            padding:1.6rem;text-align:center;color:#9ca3af;font-size:1rem;">
+  ⚙️ Enter your texts above and click <strong style="color:#e5e7eb;">Analyse</strong> to begin.
 </div>
 """, unsafe_allow_html=True)
