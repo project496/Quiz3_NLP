@@ -6,10 +6,8 @@ import re
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# ── Page Config ────────────────────────────────────────────────────────────────
 st.set_page_config(page_title="SemantiQ – Text Similarity Analyzer", layout="wide", page_icon="⚙️")
 
-# ── Color Palette (Graphite / Monochrome) ─────────────────────────────────────
 # BG:       #0d0d0d  (near-black)
 # Card:     #1a1a1a  (dark grey)
 # Border:   #4b4b4b  (mid grey)
@@ -18,7 +16,6 @@ st.set_page_config(page_title="SemantiQ – Text Similarity Analyzer", layout="w
 # Text:     #f3f4f6  (off-white)
 # Muted:    #6b7280  (slate grey)
 
-# ── Custom CSS ─────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -148,7 +145,6 @@ hr { border-color: #4b4b4b44; margin: 1.5rem 0; }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Hero Banner ────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero-banner">
   <div class="hero-title">⚙️ SemantiQ — Text Similarity Analyzer</div>
@@ -156,7 +152,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown("### ⚙️ Paul's Standards")
     st.markdown("""
@@ -176,7 +171,6 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("<span style='color:#9ca3af99;font-size:0.8rem;'>⚪ High ≥ 70% &nbsp; ⚫ Mid ≥ 45% &nbsp; 🔴 Low < 45%</span>", unsafe_allow_html=True)
 
-# ── Input Section ──────────────────────────────────────────────────────────────
 st.markdown("### ✏️ Enter Your Texts")
 n_texts = st.slider("Number of texts to compare", min_value=2, max_value=10, value=4)
 
@@ -198,7 +192,6 @@ for row in range(rows):
                 )
                 texts.append(t)
 
-# ── Control Row ────────────────────────────────────────────────────────────────
 st.markdown("---")
 col_k, col_btn, col_reset = st.columns([3, 1, 1])
 with col_k:
@@ -210,7 +203,6 @@ with col_reset:
     if st.button("🔄 Reset"):
         st.rerun()
 
-# ── Helper: Paul's Standards Computation ──────────────────────────────────────
 def compute_paul_standards(texts, sim_matrix):
     scores = {}
     n = len(texts)
@@ -268,7 +260,6 @@ def compute_paul_standards(texts, sim_matrix):
 
     return scores
 
-# ── Plotting Functions (Graphite / Monochrome palette) ────────────────────────
 BG      = "#0d0d0d"
 CARD    = "#1a1a1a"
 BORDER  = "#4b4b4b"
@@ -420,7 +411,6 @@ def plot_topk_bar(pairs, top_k):
     plt.tight_layout()
     return fig
 
-# ── Main Analysis ──────────────────────────────────────────────────────────────
 if analyse:
     filled = [t.strip() for t in texts if t.strip()]
     if len(filled) < 2:
@@ -439,7 +429,6 @@ if analyse:
         st.success("✅ Analysis Complete!")
         st.markdown("---")
 
-        # ── Similarity Matrix ──────────────────────────────────────────────────
         st.markdown("### 📊 Similarity Matrix")
         from matplotlib.colors import LinearSegmentedColormap
         st.dataframe(
@@ -448,7 +437,6 @@ if analyse:
             use_container_width=True
         )
 
-        # ── Pairwise Score Cards ───────────────────────────────────────────────
         st.markdown("### 🔢 Pairwise Similarity Scores")
         top_pairs = sorted(pairs, key=lambda x: x[2], reverse=True)[:8]
         pair_cols = st.columns(min(len(top_pairs), 4))
@@ -468,7 +456,6 @@ if analyse:
 
         st.markdown("---")
 
-        # ── Similarity Graphs ──────────────────────────────────────────────────
         st.markdown("### 📈 Similarity Visualizations")
         g1, g2 = st.columns(2)
         with g1:
@@ -480,7 +467,6 @@ if analyse:
 
         st.markdown("---")
 
-        # ── Paul's Standards ───────────────────────────────────────────────────
         st.markdown("### 🧠 Paul's Critical Thinking Standards")
         st.caption("Scores derived from text structure, vocabulary, and semantic similarity patterns.")
 
@@ -527,7 +513,6 @@ if analyse:
             fig_sbar = plot_standards_bar(paul_scores)
             st.pyplot(fig_sbar); plt.close()
 
-        # ── Interpretation ─────────────────────────────────────────────────────
         st.markdown("---")
         st.markdown("### 📝 Interpretation")
         best_pair  = max(pairs, key=lambda x: x[2])
